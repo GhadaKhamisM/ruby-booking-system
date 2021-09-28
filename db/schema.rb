@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_28_113239) do
+ActiveRecord::Schema.define(version: 2021_09_28_163208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,8 +24,15 @@ ActiveRecord::Schema.define(version: 2021_09_28_113239) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "doctors_pages", id: false, force: :cascade do |t|
+    t.bigint "doctor_id", null: false
+    t.bigint "page_id", null: false
+    t.index ["doctor_id"], name: "index_doctors_pages_on_doctor_id"
+    t.index ["page_id"], name: "index_doctors_pages_on_page_id"
+  end
+
   create_table "pages", force: :cascade do |t|
-    t.bigint "subjects_id"
+    t.bigint "subject_id"
     t.string "name", null: false
     t.integer "permalink", null: false
     t.integer "position", null: false
@@ -33,11 +40,21 @@ ActiveRecord::Schema.define(version: 2021_09_28_113239) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["permalink"], name: "index_pages_on_permalink"
-    t.index ["subjects_id"], name: "index_pages_on_subjects_id"
+    t.index ["subject_id"], name: "index_pages_on_subject_id"
+  end
+
+  create_table "section_editors", force: :cascade do |t|
+    t.bigint "doctor_id"
+    t.bigint "section_id"
+    t.string "summary"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["doctor_id"], name: "index_section_editors_on_doctor_id"
+    t.index ["section_id"], name: "index_section_editors_on_section_id"
   end
 
   create_table "sections", force: :cascade do |t|
-    t.bigint "pages_id"
+    t.bigint "page_id"
     t.string "name", null: false
     t.integer "position", null: false
     t.boolean "visible", default: false, null: false
@@ -45,7 +62,7 @@ ActiveRecord::Schema.define(version: 2021_09_28_113239) do
     t.text "content", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["pages_id"], name: "index_sections_on_pages_id"
+    t.index ["page_id"], name: "index_sections_on_page_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -56,6 +73,8 @@ ActiveRecord::Schema.define(version: 2021_09_28_113239) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "pages", "subjects", column: "subjects_id"
-  add_foreign_key "sections", "pages", column: "pages_id"
+  add_foreign_key "pages", "subjects"
+  add_foreign_key "section_editors", "doctors"
+  add_foreign_key "section_editors", "sections"
+  add_foreign_key "sections", "pages"
 end

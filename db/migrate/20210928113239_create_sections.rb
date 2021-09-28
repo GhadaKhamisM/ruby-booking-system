@@ -2,7 +2,7 @@ class CreateSections < ActiveRecord::Migration[6.1]
   def up
     create_table :sections do |t|
       #t.integer 'page_id'
-      t.references :pages, :foreign_key => true
+      t.references :page, :foreign_key => true
       t.string 'name', :null => false
       t.integer 'position', :null => false
       t.boolean 'visible', :null => false, :default => false
