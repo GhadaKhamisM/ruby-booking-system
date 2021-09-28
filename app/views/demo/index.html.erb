@@ -1,0 +1,27 @@
+<h1>Demo#index</h1>
+<p>Find me in app/views/demo/index.html.erb</p>
+<% 1 + 1 %>
+<%= 1 + 1 %>
+<br>
+<% name ="ghada" %>
+<%= "Hello #{name}" %>
+<br>
+<%= 3.times do |n| 
+    puts n
+end
+%>
+<br>
+<% 3.times do |n| %>
+<%= n %>
+<% end %>
+<br>
+<% @array.each do |n| %>
+<%= n %>
+<% end %>
+<br>
+<a href="/demo/hello"> Hello page</a>
+<br>
+<%= link_to('Hello page',{:action => 'hello'})%>
+<br>
+<%= link_to('Hello with parameters',{:action => 'hello', :page => 5, :id => 4})%>
+
